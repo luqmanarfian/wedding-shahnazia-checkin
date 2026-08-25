@@ -25,7 +25,7 @@ env:
 hostAliases: {}
 
 container:
-  port: 8080
+  port: 3000
 
 readinessProbe:
   path: /
@@ -66,7 +66,7 @@ affinity:
 service:
   type: ClusterIP
   port: 80
-  targetPort: 8080
+  targetPort: 3000
   protocol: TCP
 
 ingress:
