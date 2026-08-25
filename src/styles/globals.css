@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-ivory: #FDFBF7;
+    --color-cream: #F7F3E9;
+    --color-beige: #EAE3D2;
+    --color-champagne: #D8C4B6;
+    --color-gold: #C5A880;
+    --color-gold-dark: #B99A63;
+    --color-taupe: #8C7A6B;
+    --color-brown: #4A3E3D;
+    --color-stone: #2C2625;
+    --color-emerald: #2D5A47;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--color-ivory);
+    color: var(--color-stone);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, .font-serif-luxury {
+    font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F7F3E9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C5A880;
+  border-radius: 3px;
+}
+
+/* Elegant Jawa Motif Double Border */
+.jawa-border {
+  border: 3px double #C5A880;
+}
+
+.jawa-border-gold {
+  border: 4px double #B99A63;
+}
+
+/* Glassmorphism Luxury Card */
+.luxury-card {
+  background: rgba(253, 251, 247, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(197, 168, 128, 0.3);
+  box-shadow: 0 4px 20px -2px rgba(74, 62, 61, 0.06);
+}
+
+.luxury-card-hover {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.luxury-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(74, 62, 61, 0.12);
+  border-color: rgba(185, 154, 99, 0.6);
+}
+
+/* Laser Scanner Animation */
+@keyframes scan-laser {
+  0% {
+    top: 5%;
+    opacity: 0.8;
+  }
+  50% {
+    top: 90%;
+    opacity: 1;
+  }
+  100% {
+    top: 5%;
+    opacity: 0.8;
+  }
+}
+
+.animate-scan-laser {
+  animation: scan-laser 2.5s ease-in-out infinite;
+}

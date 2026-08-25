@@ -1,0 +1,51 @@
+# Node
+node_modules/
+
+# Build output
+dist/
+out/
+build/
+
+# Vite cache
+.vite/
+.cache/
+
+# Environment files
+.env
+.env.*.local
+.env.local
+.env.production
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+
+# Certificates and backups (do not commit private keys)
+/cert/*.pem
+/cert/*.key
+/cert/backups/
+/data/backups/
+/backups/
+
+# Test coverage
+coverage/
+coverage-final.json
+nyc_output/
+
+# Misc
+.DS_Store
+*.tgz
+.parcel-cache/
+.pnp.*

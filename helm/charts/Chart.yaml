@@ -1,0 +1,10 @@
+apiVersion: v2
+name: wedding-shahnazia-checkin-chart
+description: A Helm chart for Kubernetes
+type: application
+
+#chart version
+version: 0.0.0
+
+#app version
+appVersion: "0.0.0"

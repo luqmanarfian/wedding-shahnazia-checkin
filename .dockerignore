@@ -1,0 +1,20 @@
+# Node
+node_modules
+npm-debug.log
+package-lock.json
+
+# Local dev/build
+dist
+.env
+.env.*
+.cache
+
+# OS / IDE
+.DS_Store
+.vscode
+.idea
+/.git
+
+# Cert backups and other heavy/host-only files
+/cert/backups
+/backups
