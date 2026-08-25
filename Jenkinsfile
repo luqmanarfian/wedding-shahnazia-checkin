@@ -28,7 +28,19 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                    withCredentials([
+                        file(
+                            credentialsId: 'wedding-shahnazia-env',
+                            variable: 'ENV_FILE'
+                        )
+                    ]) {
+                        sh '''
+                            docker build \
+                                --build-arg VITE_ENV="$(cat "$ENV_FILE")" \
+                                -t "${IMAGE_NAME}:${IMAGE_TAG}" \
+                                .
+                        '''
+                    }
                 }
             }
         }
