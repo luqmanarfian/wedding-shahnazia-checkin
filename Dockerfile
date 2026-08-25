@@ -32,7 +32,7 @@ RUN addgroup -S app && adduser -S app -G app
 
 # Copy only production package files and install production deps
 COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev --production
+RUN npm install
 
 # Copy built assets and server code from builder
 COPY --from=builder /app/dist ./dist
