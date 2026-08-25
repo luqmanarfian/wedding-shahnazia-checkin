@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Install build-time packages
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm install
 
 # Copy source
 COPY . .
