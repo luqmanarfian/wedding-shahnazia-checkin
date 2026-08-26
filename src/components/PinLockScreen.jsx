@@ -163,7 +163,7 @@ export default function PinLockScreen({ onUnlockSuccess, isReadOnly }) {
         </form>
 
         <div className="mt-6 text-center text-[10px] text-[#8C7A6B]">
-          Default PIN Panitia diatur melalui file <code className="font-mono text-[#C5A880]">.env</code>
+          Tanyakan PIN kepada Panitia.
         </div>
       </div>
     </div>
