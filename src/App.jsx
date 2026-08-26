@@ -35,21 +35,23 @@ export default function App() {
   const [activeModalError, setActiveModalError] = useState(null);
   const [isGoogleSyncOpen, setIsGoogleSyncOpen] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [autoPullEnabled, setAutoPullEnabled] = useState(false);
 
-  // Load server config (Read-Only Mode & PIN Status)
+  // Load server config (Read-Only Mode, PIN Status & Auto Pull Config)
   useEffect(() => {
     fetch('/api/config')
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
           setIsReadOnly(!!data.isReadOnly);
+          setAutoPullEnabled(!!data.autoPullEnabled);
         }
       })
       .catch((err) => console.warn('Failed to load server config:', err));
   }, []);
 
   // Load stats and guests list (with optional online pull)
-  const loadData = async (triggerPull = false) => {
+  const loadData = async (triggerPull = false, showToast = false) => {
     if (!isUnlocked) return;
     setIsLoading(true);
     try {
@@ -58,7 +60,7 @@ export default function App() {
         try {
           const savedUrl = localStorage.getItem('wedding_google_webapp_url') || '';
           const pullRes = await syncPullGoogleSheets(savedUrl);
-          if (pullRes.success) {
+          if (pullRes.success && showToast) {
             showNotification(pullRes.message || 'Berhasil sinkronisasi dengan Google Sheets!', 'success');
           }
         } catch (e) {
@@ -78,7 +80,7 @@ export default function App() {
         setGuests(guestsRes.guests);
       }
 
-      if (triggerPull) {
+      if (triggerPull && showToast) {
         showNotification('Daftar & statistik tamu berhasil diperbarui!', 'success');
       }
     } catch (err) {
@@ -90,11 +92,14 @@ export default function App() {
 
   useEffect(() => {
     if (isUnlocked) {
-      loadData(false);
-      const interval = setInterval(() => loadData(false), 30000);
+      loadData(false, false);
+      const interval = setInterval(() => {
+        // Run pull logic every 3s if enabled by env, otherwise just local reload
+        loadData(autoPullEnabled, false);
+      }, 3000);
       return () => clearInterval(interval);
     }
-  }, [isUnlocked]);
+  }, [isUnlocked, autoPullEnabled]);
 
   const showNotification = (msg, type = 'success') => {
     setNotification({ msg, type });
@@ -140,7 +145,7 @@ export default function App() {
     if (res.success) {
       showNotification(`Check-in Berhasil untuk: ${res.guest.namaTamu}`, 'success');
       setActiveModalGuest(res.guest); // Update modal view to already checked in state
-      loadData(false); // Refresh list and stats
+      loadData(false, false); // Refresh list and stats
       return true;
     } else {
       showNotification(res.message || 'Gagal melakukan check-in', 'error');
@@ -185,7 +190,7 @@ export default function App() {
 
       {/* Main Header */}
       <Header
-        onRefreshStats={() => loadData(true)}
+        onRefreshStats={() => loadData(true, true)}
         isRefreshing={isLoading}
         onOpenGoogleSync={() => setIsGoogleSyncOpen(true)}
         isReadOnly={isReadOnly}

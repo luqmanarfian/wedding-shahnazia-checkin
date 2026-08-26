@@ -18,6 +18,11 @@ function isReadOnlyMode() {
   return process.env.READ_ONLY_MODE === 'true';
 }
 
+// Helper to check if auto pull from Google Sheets is enabled
+function isAutoPullEnabled() {
+  return process.env.AUTO_PULL_ENABLED === 'true';
+}
+
 // Helper to get configured PIN
 function getAppPin() {
   return process.env.APP_PIN || '1234';
@@ -33,6 +38,7 @@ router.get('/config', (req, res) => {
   return res.json({
     success: true,
     isReadOnly: isReadOnlyMode(),
+    autoPullEnabled: isAutoPullEnabled(),
     pinRequired: true,
     defaultGoogleUrl: getDefaultGoogleUrl(),
   });
