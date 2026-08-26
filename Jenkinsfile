@@ -25,27 +25,34 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    withCredentials([
-                        file(
-                            credentialsId: 'wedding-shahnazia-env',
-                            variable: 'ENV_FILE'
-                        )
-                    ]) {
-                        sh '''
-                            cp "$ENV_FILE" .env.production
-                            docker build \
-                                -t "${IMAGE_NAME}:${IMAGE_TAG}" \
-                                .
-                            rm -f .env.production
-                        '''
-                    }
+    stage('Build Docker Image') {
+        steps {
+            script {
+                withCredentials([
+                    file(
+                        credentialsId: 'wedding-shahnazia-env',
+                        variable: 'ENV_FILE'
+                    )
+                ]) {
+                    sh '''
+                        set -e
+    
+                        cp "$ENV_FILE" .env.production
+    
+                        echo "Checking Vite environment..."
+    
+                        grep -E '^VITE_[A-Za-z0-9_]+=' .env.production || true
+    
+                        docker build \
+                            -t "${IMAGE_NAME}:${IMAGE_TAG}" \
+                            .
+    
+                        rm -f .env.production
+                    '''
                 }
             }
         }
-
+    }
         stage('Security Scan') {
             steps {
                 // Menjalankan perintah lewat 'docker run' langsung terbukti jauh lebih stabil daripada
