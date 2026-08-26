@@ -35,10 +35,11 @@ pipeline {
                         )
                     ]) {
                         sh '''
+                            cp "$ENV_FILE" .env.production
                             docker build \
-                                --build-arg VITE_ENV="$(cat "$ENV_FILE")" \
                                 -t "${IMAGE_NAME}:${IMAGE_TAG}" \
                                 .
+                            rm -f .env.production
                         '''
                     }
                 }
