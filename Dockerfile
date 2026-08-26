@@ -28,14 +28,12 @@ RUN npm ci --omit=dev && \
            /usr/local/bin/npx
 
 # Copy application
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/server ./server
-COPY --from=builder /app/cert ./cert
-COPY --from=builder /app/data ./data
-COPY --from=builder /app/index.html ./index.html
-COPY --from=builder /app/.env ./.env
-
-RUN chown app:app /app/.env
+COPY --chown=app:app --from=builder /app/dist ./dist
+COPY --chown=app:app --from=builder /app/server ./server
+COPY --chown=app:app --from=builder /app/cert ./cert
+COPY --chown=app:app --from=builder /app/data ./data
+COPY --chown=app:app --from=builder /app/index.html ./index.html
+COPY --chown=app:app --from=builder /app/.env ./.env
 
 EXPOSE 3000
 
