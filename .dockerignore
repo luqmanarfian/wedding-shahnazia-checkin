@@ -4,10 +4,7 @@ npm-debug.log
 
 # Local dev/build
 dist
-.env
-.env.*
-!.env.production
-.cache
+
 
 # OS / IDE
 .DS_Store
