@@ -30,9 +30,13 @@ WORKDIR /app
 # Create non-root user for better security
 RUN addgroup -S app && adduser -S app -G app
 
+# Patch Alpine OS package vulnerabilities
+RUN apk update && apk upgrade --no-cache
+
 # Copy only production package files and install production deps
 COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev && \
+    rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 # Copy built assets and server code from builder
 COPY --from=builder /app/dist ./dist
