@@ -36,13 +36,13 @@ readinessProbe:
 #using yaml format
 resources:
   limits:
-    cpu: "15m"
-    memory: "25Mi"
+    cpu: "150m"
+    memory: "250Mi"
     ephemeral-storage: 128Mi
 
   requests:
-    cpu: "10m"
-    memory: "20Mi"
+    cpu: "100m"
+    memory: "200Mi"
     ephemeral-storage: 128Mi
 
 autoscaling:
