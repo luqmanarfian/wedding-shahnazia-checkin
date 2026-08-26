@@ -37,17 +37,17 @@ pipeline {
                     sh '''
                         set -e
 
-                        cp "$ENV_FILE" .env.production
+                        cp "$ENV_FILE" .env
 
                         echo "Checking Vite environment..."
 
-                        grep -E '^[A-Za-z_][A-Za-z0-9_]*=' .env.production | sed 's/=.*$/=***MASKED***/'
+                        grep -E '^[A-Za-z_][A-Za-z0-9_]*=' .env | sed 's/=.*$/=***MASKED***/'
 
                         docker build \
                             -t "${IMAGE_NAME}:${IMAGE_TAG}" \
                             .
 
-                        rm -f .env.production
+                        rm -f .env
                     '''
                 }
             }
