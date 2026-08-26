@@ -7,24 +7,6 @@ RUN npm ci
 
 COPY . .
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-# .env.production harus sudah tersedia di build context
-# dan akan digunakan oleh Vite ketika npm run build dijalankan.
-# Verify .env.production
-RUN test -f /app/.env.production || \
-    (echo "ERROR: /app/.env.production NOT FOUND" && exit 1)
-
-RUN echo "===== .env.production detected =====" && \
-    echo "File:" && ls -lah /app/.env.production && \
-    echo "Line count:" && wc -l /app/.env.production && \
-    echo "Variables:" && \
-    sed -E 's/^([[:space:]]*[A-Za-z_][A-Za-z0-9_]*)=.*/\1=***MASKED***/' \
-    /app/.env.production && \
-    echo "====================================="
-
-
 RUN npm run build
 
 FROM node:20-alpine AS runner
