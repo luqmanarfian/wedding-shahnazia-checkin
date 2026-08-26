@@ -35,6 +35,8 @@ COPY --from=builder /app/data ./data
 COPY --from=builder /app/index.html ./index.html
 COPY --from=builder /app/.env ./.env
 
+RUN chown app:app /app/.env
+
 EXPOSE 3000
 
 USER app
