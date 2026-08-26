@@ -140,16 +140,28 @@ export default function QRScanner({ onScanSuccess, onOpenManualSearch }) {
           </p>
         </div>
 
-        {/* Camera Selector / Switch Button */}
+        {/* Camera Selector / Switch Dropdown & Button */}
         {availableCameras.length > 1 && (
-          <button
-            onClick={handleSwitchCamera}
-            className="px-3 py-1.5 rounded-lg bg-[#F7F3E9] text-[#4A3E3D] text-xs font-medium border border-[#C5A880]/40 hover:bg-[#EAE3D2] transition-colors flex items-center gap-1.5 active:scale-95"
-            title="Ganti Kamera"
-          >
-            <RefreshCw className="w-3.5 h-3.5 text-[#C5A880]" />
-            <span>Ganti Kamera</span>
-          </button>
+          <div className="flex items-center gap-1.5">
+            <select
+              value={selectedCameraId}
+              onChange={(e) => setSelectedCameraId(e.target.value)}
+              className="px-2 py-1.5 rounded-lg bg-[#F7F3E9] text-[#4A3E3D] text-xs font-medium border border-[#C5A880]/40 focus:outline-none focus:border-[#B99A63] transition-all max-w-[140px] sm:max-w-[180px]"
+            >
+              {availableCameras.map((camera) => (
+                <option key={camera.id} value={camera.id}>
+                  {camera.label || `Kamera ${camera.id.slice(0, 5)}...`}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={handleSwitchCamera}
+              className="p-2 rounded-lg bg-[#F7F3E9] text-[#4A3E3D] border border-[#C5A880]/40 hover:bg-[#EAE3D2] transition-colors flex items-center justify-center active:scale-95"
+              title="Ganti Kamera Cepat"
+            >
+              <RefreshCw className="w-3.5 h-3.5 text-[#C5A880]" />
+            </button>
+          </div>
         )}
       </div>
 
