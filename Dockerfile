@@ -39,6 +39,7 @@ COPY --from=builder /app/server ./server
 COPY --from=builder /app/cert ./cert
 COPY --from=builder /app/data ./data
 COPY --from=builder /app/index.html ./index.html
+COPY --from=builder /app/.env.production ./.env.production
 
 EXPOSE 3000
 
