@@ -2,12 +2,12 @@
 # - Builder: installs dev deps and runs `npm run build` (Vite)
 # - Runner: installs only production deps and runs the Node server
 
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Install build-time packages
 COPY package.json package-lock.json* ./
-RUN npm install
+RUN npm ci
 
 # Copy source
 COPY . .
@@ -24,7 +24,7 @@ RUN if [ -n "${VITE_ENV}" ]; then printf '%s\n' "${VITE_ENV}" > .env.production;
 # Build frontend (produces ./dist)
 RUN npm run build
 
-FROM node:18-alpine AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 # Create non-root user for better security
@@ -32,7 +32,7 @@ RUN addgroup -S app && adduser -S app -G app
 
 # Copy only production package files and install production deps
 COPY package.json package-lock.json* ./
-RUN npm install
+RUN npm ci --omit=dev
 
 # Copy built assets and server code from builder
 COPY --from=builder /app/dist ./dist
