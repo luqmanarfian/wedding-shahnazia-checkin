@@ -94,9 +94,9 @@ export default function App() {
     if (isUnlocked) {
       loadData(false, false);
       const interval = setInterval(() => {
-        // Run pull logic every 3s if enabled by env, otherwise just local reload
+        // Run pull logic every 5s if enabled by env, otherwise just local reload
         loadData(autoPullEnabled, false);
-      }, 3000);
+      }, 5000);
       return () => clearInterval(interval);
     }
   }, [isUnlocked, autoPullEnabled]);

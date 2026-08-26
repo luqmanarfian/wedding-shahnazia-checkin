@@ -74,7 +74,7 @@ export default function StatsCard({ stats, isLoading }) {
 
             <div className="mt-2 flex items-baseline justify-between">
               <span className={`text-2xl sm:text-3xl font-bold font-serif-luxury ${item.textColor}`}>
-                {isLoading ? '...' : item.value}
+                {item.value}
               </span>
               <span className="text-xs text-[#8C7A6B] font-medium">
                 {item.subtitle}
