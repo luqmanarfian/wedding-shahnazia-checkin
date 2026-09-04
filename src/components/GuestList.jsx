@@ -6,7 +6,11 @@ export default function GuestList({ guests, onSelectGuest, onQuickCheckIn }) {
   const [filterTab, setFilterTab] = useState('all'); // 'all', 'checkedIn', 'pending'
 
   const filteredGuests = guests.filter((g) => {
-    // 1. Text Search Filter
+    // 1. VIP Tab Filter (If VIP tab selected, only keep VIP guests)
+    const isVip = (g.namaTamu && g.namaTamu.includes('(VIP)')) || (g.pesan && g.pesan.includes('(Tamu VIP'));
+    if (filterTab === 'vip' && !isVip) return false;
+
+    // 2. Text Search Filter
     const query = searchQuery.toLowerCase().trim();
     const matchesQuery =
       !query ||
@@ -14,7 +18,7 @@ export default function GuestList({ guests, onSelectGuest, onQuickCheckIn }) {
       g.qrCodeId.toLowerCase().includes(query) ||
       g.pesan.toLowerCase().includes(query);
 
-    // 2. Status Tab Filter
+    // 3. Status Tab Filter
     const isCheckedIn = g.checkIn && g.checkIn.trim() !== '';
     if (filterTab === 'checkedIn' && !isCheckedIn) return false;
     if (filterTab === 'pending' && isCheckedIn) return false;
@@ -38,7 +42,7 @@ export default function GuestList({ guests, onSelectGuest, onQuickCheckIn }) {
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex items-center gap-1 bg-[#F7F3E9] p-1 rounded-xl border border-[#C5A880]/30 self-start sm:self-auto text-xs">
+        <div className="flex flex-wrap items-center gap-1 bg-[#F7F3E9] p-1 rounded-xl border border-[#C5A880]/30 self-start sm:self-auto text-xs">
           <button
             onClick={() => setFilterTab('all')}
             className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
@@ -48,6 +52,17 @@ export default function GuestList({ guests, onSelectGuest, onQuickCheckIn }) {
             }`}
           >
             Semua ({guests.length})
+          </button>
+
+          <button
+            onClick={() => setFilterTab('vip')}
+            className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+              filterTab === 'vip'
+                ? 'bg-[#B99A63] text-white shadow-xs'
+                : 'text-[#8C7A6B] hover:text-[#4A3E3D]'
+            }`}
+          >
+            VIP ({guests.filter(g => (g.namaTamu && g.namaTamu.includes('(VIP)')) || (g.pesan && g.pesan.includes('(Tamu VIP'))).length})
           </button>
 
           <button
@@ -115,10 +130,15 @@ export default function GuestList({ guests, onSelectGuest, onQuickCheckIn }) {
               >
                 {/* Left Info */}
                 <div className="space-y-1 cursor-pointer" onClick={() => onSelectGuest(g)}>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-bold text-sm text-[#4A3E3D] font-serif-luxury">
                       {g.namaTamu}
                     </span>
+                    {((g.namaTamu && g.namaTamu.includes('(VIP)')) || (g.pesan && g.pesan.includes('(Tamu VIP'))) && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-md font-bold bg-[#B99A63] text-white shadow-2xs">
+                        VIP
+                      </span>
+                    )}
                     <span className="text-[10px] px-2 py-0.5 rounded-md font-bold bg-[#C5A880]/20 text-[#4A3E3D]">
                       {g.jumlahTamu} Pax
                     </span>

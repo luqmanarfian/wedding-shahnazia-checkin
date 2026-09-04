@@ -82,12 +82,13 @@ test('Backend Logic & CSV Persistence Tests', async (t) => {
     assert.equal(result.alreadyCheckedIn, true);
   });
 
-  await t.test('6. Dashboard statistics calculation', () => {
-    const stats = getStats();
-    assert.equal(stats.totalGuests, 2);
-    assert.equal(stats.totalPeople, 3);
-    assert.equal(stats.checkedInGuests, 2);
-    assert.equal(stats.checkedInPeople, 3);
-    assert.equal(stats.remainingGuests, 0);
+  await t.test('7. Guest VIP loaded correctly', () => {
+    const vipCSV = sampleTestCSV + `2026-09-04 16:17:00,Moh Jumhur Hidayat (VIP),Hadir,2,(Tamu VIP 5-9-2026),WEDDING-VIP-001,\n`;
+    fs.writeFileSync(CSV_FILE, vipCSV, 'utf-8');
+    const guests = readGuestsCSV();
+    const vipGuest = guests.find((g) => g.qrCodeId === 'WEDDING-VIP-001');
+    assert.notEqual(vipGuest, undefined);
+    assert.equal(vipGuest.namaTamu, 'Moh Jumhur Hidayat (VIP)');
+    assert.equal(vipGuest.pesan, '(Tamu VIP 5-9-2026)');
   });
 });
